@@ -1,0 +1,12 @@
+.invalid-entry {
+  color: red;
+}
+
+.hidden-display {
+  display: hidden;
+}
+
+li {
+  display: inline-block;
+  padding: 5px;
+}

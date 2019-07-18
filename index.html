@@ -5,21 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="./js/vue.js"></script>
+  <link rel="stylesheet" href="style.css">
   <title>Who Pays The Bill?</title>
 </head>
 <body>
   
-  <div id="app"></div>
+  <div id="app">
+
+    <name-entry-form></name-entry-form>
+
+  </div>
 
 </body>
 
 <script>
 
-const 
+  Vue.component('name-entry-form', {
+    data() {
+      return {
+        nameArray: [],
+        nameInput: '',
+        isHidden: true
+      };
+    },
+    methods: {
+      renderNamesOnDOM() {
 
-const app = new Vue({
-  el: '#app',
-});
+      },
+      addPersonsName() {
+        this.nameArray = [...this.nameArray, this.nameInput];
+        this.nameInput = '';
+        this.renderNamesOnDOM();
+      },
+      showInvalidParagraph(show) {
+        if (show) {
+          this.isHidden = false;
+        } else {
+          this.isHidden = true;
+          this.addPersonsName();
+        };
+      },
+      checkValidInput() {
+        this.nameInput === '' ? this.showInvalidParagraph(true) : this.showInvalidParagraph(false);
+      },
+    },
+    template: `
+      <form>
+        <label for="name">Who Pays the Bill?</label>
+        <input v-model.trim="nameInput" type="text" name="name" id="name" autocomplete="off">
+        <button @click.prevent="checkValidInput()">Add Name to Draw</button>
+        <ul>
+        <li v-for="name in nameArray">
+            {{ name }}
+        </li>  
+        </ul>
+        <p class="invalid-entry" v-show="!isHidden">You must enter a valid name.</p>
+      </form>
+      `
+  });
+
+  const app = new Vue({
+    el: '#app',
+  });
 
 </script>
 
