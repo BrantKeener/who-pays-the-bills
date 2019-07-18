@@ -12,7 +12,7 @@
   
   <div id="app">
 
-    <name-entry-form></name-entry-form>
+    <variable-template></variable-template>
 
   </div>
 
@@ -20,22 +20,26 @@
 
 <script>
 
-  Vue.component('name-entry-form', {
+  Vue.component('variable-template', {
     data() {
       return {
         nameArray: [],
         nameInput: '',
-        isHidden: true
+        isHidden: true,
+        nameArrayGreaterThan2: false,
+        chosenPayer: {
+          name: '',
+          chosen: false
+        }
       };
     },
     methods: {
-      renderNamesOnDOM() {
-
+      nameArrayLengthCheck() {
+        this.nameArray.length > 1 ? this.nameArrayGreaterThan2 = true : '';
       },
       addPersonsName() {
         this.nameArray = [...this.nameArray, this.nameInput];
         this.nameInput = '';
-        this.renderNamesOnDOM();
       },
       showInvalidParagraph(show) {
         if (show) {
@@ -43,25 +47,61 @@
         } else {
           this.isHidden = true;
           this.addPersonsName();
+          this.nameArrayLengthCheck();
         };
       },
       checkValidInput() {
         this.nameInput === '' ? this.showInvalidParagraph(true) : this.showInvalidParagraph(false);
       },
+      choosePayer() {
+        const chosenPayerName = this.nameArray[Math.floor(Math.random() * this.nameArray.length)];
+        this.chosenPayer.name = chosenPayerName;
+        this.chosenPayer.chosen = true;
+      },
+      resetApplication() {
+        this.nameArray = [];
+        this.nameInput = '';
+        this.isHidden = true;
+        this.nameArrayGreaterThan2 = false;
+        this.choosePayer.name = '';
+        this.chosenPayer.chosen = false;
+      }
     },
     template: `
-      <form>
-        <label for="name">Who Pays the Bill?</label>
-        <input v-model.trim="nameInput" type="text" name="name" id="name" autocomplete="off">
-        <button @click.prevent="checkValidInput()">Add Name to Draw</button>
-        <ul>
-        <li v-for="name in nameArray">
-            {{ name }}
-        </li>  
-        </ul>
-        <p class="invalid-entry" v-show="!isHidden">You must enter a valid name.</p>
-      </form>
-      `
+      <div>
+        <div v-if="!chosenPayer.chosen">
+          <form>
+            <label for="name">Who Pays the Bill?</label>
+            <input v-model.trim="nameInput" type="text" name="name" id="name" autocomplete="off">
+            <button @click.prevent="checkValidInput()">Add Name to Draw</button>
+          </form>
+
+          <hr>
+
+          <ul>
+          <li v-for="name in nameArray">
+              {{ name }}
+          </li>  
+          </ul>
+
+          <button v-show="nameArrayGreaterThan2" @click.prevent="choosePayer()">Click to Choose</button>
+
+          <p class="invalid-entry" v-show="!isHidden">You must enter a valid name.</p>
+
+        </div>
+
+        <div v-else>
+
+          <h1>{{ chosenPayer.name }}</h1>
+
+          <p>Has been chosen to pay</p>
+          <p>Do Not Question the Machine</p>
+
+          <button @click="resetApplication()">Start Again</button>
+
+        </div>
+      </div>
+    `
   });
 
   const app = new Vue({
