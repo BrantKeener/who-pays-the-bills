@@ -1,16 +1,91 @@
 body {
-  height: 400px;
+  background-image: url(./images/sushi-bg.jpg);
+  background-size: 100vw 100vh;
+  height: 100vh;
+  margin: 0%;
+  padding: 0%;
+  width: 100vw;
 }
 
-.invalid-entry {
+.app-container {
+  height: 100vh;
+  position: relative;
+  text-align: center;
+  width: 100vw;
+}
+
+.warning {
   color: red;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.template-div {
+  background-color: rgba(76, 80, 80, 0.98);
+  border-radius: .5rem;
+  height: 500px;
+  left: 50%;
+  padding: 50px;
+  position: absolute;
+  top: 20%;
+  transform: translateX(-50%);
+}
+
+div > button {
+  position: relative;
+  left: -5px;
+}
+
+form > button, input, label {
+  display: block;
+}
+
+form > button, input {
+  border-radius: .5rem;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+button {
+  border-radius: .5rem;
+  font-size: 1.5rem;
+  padding: 10px;
+}
+
+form > button {
+  margin-left: 29%;
+}
+
+input {
+  border-radius: .5rem;
+  font-size: 1.5rem;
+  margin-left: 25%;
+  width: 250px;
+}
+
+h1, label {
+  color: rgb(109, 188, 199);
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+
+p {
+  color: white;
+  font-size: 1.7rem;
 }
 
 li {
+  background-color: rgb(109, 188, 199);
+  border-radius: .5rem;
+  font-size: 1.7rem;
   display: inline-block;
-  padding: 5px;
+  padding: 10px;
+  margin-right: 5px;
 }
 
 ul {
-  height: 25px;
+  left: -25px;
+  position: relative;
+  height: 75px;
 }

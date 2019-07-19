@@ -30,7 +30,8 @@
         chosenPayer: {
           name: '',
           chosen: false
-        }
+        },
+        machineQuestioned: false,
       };
     },
     methods: {
@@ -59,24 +60,28 @@
         this.chosenPayer.chosen = true;
       },
       resetApplication() {
-        this.nameArray = [];
-        this.nameInput = '';
-        this.isHidden = true;
-        this.nameArrayGreaterThan2 = false;
-        this.choosePayer.name = '';
-        this.chosenPayer.chosen = false;
+        this.machineQuestioned = true;
+        setTimeout(() => {
+          this.nameArray = [];
+          this.nameInput = '';
+          this.isHidden = true;
+          this.nameArrayGreaterThan2 = false;
+          this.choosePayer.name = '';
+          this.chosenPayer.chosen = false;
+          this.machineQuestioned = false;
+        }, 2000)
       }
     },
     template: `
-      <div>
-        <div v-if="!chosenPayer.chosen">
+      <div class="app-container">
+        <div class="template-div" v-if="!chosenPayer.chosen">
           <form>
             <label for="name">Who Pays the Bill?</label>
+            <hr>
             <input v-model.trim="nameInput" type="text" name="name" id="name" autocomplete="off">
             <button @click.prevent="checkValidInput()">Add Name to Draw</button>
           </form>
 
-          <hr>
 
           <ul>
           <li v-for="name in nameArray">
@@ -86,20 +91,26 @@
 
           <button v-show="nameArrayGreaterThan2" @click.prevent="choosePayer()">Click to Choose</button>
 
-          <p class="invalid-entry" v-show="!isHidden">You must enter a valid name.</p>
+          <p class="warning" v-show="!isHidden">You must enter a valid name.</p>
 
         </div>
 
-        <div v-else>
+        <div class="template-div" v-else-if="machineQuestioned === false">
 
           <h1>{{ chosenPayer.name }}</h1>
 
           <p>Has been chosen to pay</p>
           <p>Do Not Question the Machine</p>
 
-          <button @click="resetApplication()">Start Again</button>
+          <button @click="resetApplication()">Question The Machine</button>
 
         </div>
+
+        <div class="template-div" v-else>
+          <p class="warning">How Dare You!</p>
+          <p>...all right then</p>
+        </div>
+
       </div>
     `
   });
